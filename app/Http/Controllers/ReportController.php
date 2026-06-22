@@ -3,71 +3,50 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\ReportLink;
 
 class ReportController extends Controller
 {
-    // Menampilkan halaman Welcome V-MON
+    /**
+     * Menampilkan halaman awal (Welcome Page / Form Input)
+     */
     public function index()
     {
         return view('welcome');
     }
 
-    // Memproses form saat tombol diklik
+    /**
+     * Memproses data form dari halaman Welcome dan mengarahkan ke Dashboard
+     */
     public function process(Request $request)
     {
-        // 1. Validasi Input agar data tidak kosong atau salah format
+        // 1. Validasi Input Ketat dengan Pesan Kustom
         $request->validate([
-            'periode_bulan' => 'required|string',
             'spreadsheet_url' => 'required|url',
-            'kategori' => 'required|in:visit,non_pots',
+            'periode_bulan'   => 'required|string|max:50',
+            'kategori'        => 'required|in:nonpots,visitpranpc', // Disesuaikan dengan "visitpranpc"
         ], [
-            'periode_bulan.required' => 'Periode bulan wajib diisi.',
-            'spreadsheet_url.required' => 'Link spreadsheet wajib diisi.',
-            'spreadsheet_url.url' => 'Format link yang dimasukkan tidak valid.',
+            // Kustomisasi pesan error agar lebih rapi di frontend
+            'spreadsheet_url.required' => 'Link Spreadsheet wajib diisi.',
+            'spreadsheet_url.url'      => 'Format Link Spreadsheet tidak valid. Harap masukkan URL penuh.',
+            'periode_bulan.required'   => 'Periode (Bulan & Tahun) wajib diisi.',
+            'kategori.required'        => 'Silakan pilih Kategori Dashboard terlebih dahulu.',
+            'kategori.in'              => 'Pilihan Kategori tidak valid. Silakan pilih dari menu yang tersedia.',
         ]);
 
-        // 2. Ekstraksi Spreadsheet ID dari URL panjang
-        $url = $request->spreadsheet_url;
-        $spreadsheetId = $this->extractSpreadsheetId($url);
-
-        if (!$spreadsheetId) {
-            return back()->withErrors(['spreadsheet_url' => 'ID Google Sheets tidak ditemukan dari URL tersebut. Pastikan link lengkap.'])->withInput();
-        }
-
-        // 3. Simpan Riwayat ke Database (Update jika periode & kategori sudah ada)
-        ReportLink::updateOrCreate(
-            [
-                'kategori' => $request->kategori,
-                'periode_bulan' => $request->periode_bulan,
-            ],
-            [
-                'spreadsheet_url' => $url,
-                'spreadsheet_id' => $spreadsheetId,
-            ]
-        );
-
-        // 4. Simpan ke Session untuk mempermudah navigasi Dashboard
+        // 2. Simpan Data ke dalam Session (Sesi Server)
         session([
-            'spreadsheet_id' => $spreadsheetId,
-            'periode_bulan' => $request->periode_bulan,
-            'kategori' => $request->kategori
+            'spreadsheet_url' => $request->spreadsheet_url,
+            'periode_bulan'   => $request->periode_bulan,
         ]);
 
-        // 5. Alihkan ke halaman dashboard masing-masing
-        if ($request->kategori === 'visit') {
-            return redirect()->route('visit.dashboard');
-        } else {
+        // 3. Logika Pengalihan (Redirect) sesuai Kategori yang dipilih
+        if ($request->kategori === 'nonpots') {
             return redirect()->route('nonpots.dashboard');
+        } elseif ($request->kategori === 'visitpranpc') {
+            return redirect()->route('visitpranpc.dashboard');
         }
-    }
 
-    // Fungsi private untuk mengambil ID Spreadsheet pakai Regex
-    private function extractSpreadsheetId($url)
-    {
-        if (preg_match('/\/d\/([a-zA-Z0-9-_]+)/', $url, $matches)) {
-            return $matches[1];
-        }
-        return null;
+        // 4. Fallback/Pengaman jika ada error yang terlewat
+        return redirect()->back()->withErrors(['kategori' => 'Kategori tidak dikenali oleh sistem.']);
     }
 }

@@ -1,17 +1,15 @@
 <?php
 
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
-// Jalur halaman awal V-MON
 Route::get('/', [ReportController::class, 'index'])->name('welcome');
 Route::post('/report/process', [ReportController::class, 'process'])->name('report.process');
 
-// Placeholder Dashboard (Hanya sementara agar tidak error saat tombol diklik)
-Route::get('/visit-monitoring', function() {
-    return "Halaman Dashboard Visit Collection V-MON (Dalam Pengerjaan)";
-})->name('visit.dashboard');
+// Jalur Dashboard Modul NON POTS
+Route::get('/non-pots-monitoring', [DashboardController::class, 'nonPotsDashboard'])->name('nonpots.dashboard');
+Route::get('/non-pots-monitoring/performa-am', [DashboardController::class, 'nonPotsPerformaAm'])->name('nonpots.performa_am'); // Route Baru
 
-Route::get('/non-pots-monitoring', function() {
-    return "Halaman Dashboard NON POTS V-MON (Dalam Pengerjaan)";
-})->name('nonpots.dashboard');
+// Jalur Dashboard Modul Visit PANPC
+Route::get('/visit-panpc', [DashboardController::class, 'visitPanpcDashboard'])->name('visitpranpc.dashboard');

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>C-MON | Telkom Witel Sulbagsel</title>
+    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -143,16 +144,16 @@
 
     </header>
 
-    <main class="relative z-10 w-full flex-grow flex flex-col justify-center px-5 md:px-10 lg:px-16 pt-24 md:pt-32 pb-16">
+    <main class="relative z-10 w-full flex-grow flex flex-col justify-center px-5 sm:px-8 md:px-10 lg:px-16 pt-28 md:pt-32 pb-16">
 
-        <div class="max-w-5xl mt-8 md:mt-0">
-            <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-[5.5rem] font-black text-white uppercase leading-tight lg:leading-[1.05] drop-shadow-lg hover-title-animated cursor-default origin-left">
-                INTEGRATED<br>
-                <span class="text-t-gray-dark">DASHBOARD</span>
+        <div class="max-w-5xl mt-6 sm:mt-8 md:mt-0">
+            <h1 class="font-display text-4xl min-[400px]:text-[2.75rem] sm:text-5xl md:text-6xl lg:text-[5rem] xl:text-[5.5rem] font-black text-white uppercase leading-tight lg:leading-[1.05] drop-shadow-lg hover-title-animated cursor-default origin-left">
+                COLLECTION<br>
+                <span class="text-t-gray-dark">MONITORING</span>
             </h1>
 
             <p class="text-white/90 font-sans text-sm md:text-base lg:text-lg font-medium mt-4 md:mt-6 max-w-2xl leading-relaxed drop-shadow-sm">
-                Platform monitoring performa berbasis cloud. Kelola pelaporan dengan lebih cepat dan visualisasi data yang interaktif.
+                Platform monitoring performa berbasis Dashboard. Kelola pelaporan dengan lebih cepat dan visualisasi data yang interaktif.
             </p>
 
             @if ($errors->any())
@@ -165,7 +166,7 @@
                 </div>
             @endif
 
-            <form id="vmon_form" action="{{ route('report.process') }}" method="POST" class="mt-8 md:mt-10 lg:mt-14">
+            <form id="vmon_form" action="{{ route('report.process') }}" method="POST" class="mt-8 md:mt-10 lg:mt-12">
                 @csrf
 
                 <div class="flex flex-col lg:flex-row gap-4 md:gap-5 items-start">
@@ -174,24 +175,24 @@
                         <label class="block text-white/90 text-xs md:text-sm font-bold mb-2 uppercase tracking-widest font-sans">Sumber Data</label>
                         <select id="kategori_dropdown" name="kategori" class="w-full lg:w-64 bg-t-gray-dark/40 hover:bg-t-gray-dark/60 backdrop-blur-md border border-white/20 text-white font-display font-bold text-base md:text-lg px-4 md:px-6 py-3.5 md:py-4 rounded-xl shadow-xl outline-none focus:border-white focus:bg-t-gray-dark/80 transition-all duration-300 cursor-pointer">
                             <option value="">-- PILIH DATA --</option>
-                            <option value="visit">Visit Collection</option>
-                            <option value="non_pots">NON POTS</option>
+                            <option value="visitpranpc">Visit PRANPC Monitoring</option>
+                            <option value="nonpots">NON POTS Monitoring</option>
                         </select>
                     </div>
 
                     <div id="dynamic_panel" class="slide-hidden flex flex-col md:flex-row gap-3 md:gap-4 w-full max-w-4xl lg:mt-7">
 
-                        <div class="w-full md:w-56 shrink-0">
+                        <div class="w-full md:w-64 shrink-0">
                             <input type="text" name="periode_bulan" value="{{ old('periode_bulan') }}" placeholder="Periode (Cth: Mei 2026)"
                                 class="w-full bg-white/10 backdrop-blur-md border border-white/20 text-white placeholder-white/70 font-sans font-medium text-sm md:text-base px-4 md:px-5 py-3.5 md:py-4 rounded-xl shadow-xl outline-none focus:bg-white/20 focus:border-white transition-all duration-300" required>
                         </div>
 
-                        <div class="flex flex-col md:flex-row w-full bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-xl overflow-hidden focus-within:bg-white/20 focus-within:border-white transition-all duration-300">
+                        <div class="flex flex-col sm:flex-row w-full bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-xl overflow-hidden focus-within:bg-white/20 focus-within:border-white transition-all duration-300">
 
                             <input type="url" name="spreadsheet_url" value="{{ old('spreadsheet_url') }}" placeholder="Tempelkan link spreadsheet....."
-                                class="w-full bg-transparent text-white placeholder-white/70 font-sans font-medium text-sm md:text-base px-4 md:px-5 py-3.5 md:py-4 outline-none border-b md:border-b-0 md:border-r border-white/10" required>
+                                class="w-full bg-transparent text-white placeholder-white/70 font-sans font-medium text-sm md:text-base px-4 md:px-5 py-3.5 sm:py-4 outline-none border-b sm:border-b-0 sm:border-r border-white/10" required>
 
-                            <button type="button" id="btn_trigger_modal" class="bg-t-red-dark hover:bg-t-gray-dark text-white font-display font-black tracking-widest text-sm md:text-base px-6 py-4 md:py-0 transition-colors duration-300 flex items-center justify-center gap-2 shrink-0">
+                            <button type="button" id="btn_trigger_modal" class="w-full sm:w-auto bg-t-red-dark hover:bg-t-gray-dark text-white font-display font-black tracking-widest text-sm md:text-base px-6 py-4 transition-colors duration-300 flex items-center justify-center gap-2 shrink-0">
                                 SUBMIT
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -207,7 +208,7 @@
 
     <div id="confirmation_modal" class="fixed inset-0 z-50 flex items-center justify-center bg-t-gray-dark/80 modal-hidden transition-all duration-300 ease-out px-4 py-8">
 
-        <div id="modal_card" class="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl modal-card-hidden transition-transform duration-300 ease-out border-t-[8px] md:border-t-[10px] border-t-red max-h-full overflow-y-auto">
+        <div id="modal_card" class="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl modal-card-hidden transition-transform duration-300 ease-out border-t-[8px] md:border-t-[10px] border-t-t-red max-h-full overflow-y-auto">
 
             <div class="w-16 h-16 md:w-20 md:h-20 bg-red-50 rounded-full flex items-center justify-center mb-4 md:mb-6 mx-auto shadow-inner">
                 <svg class="w-8 h-8 md:w-10 md:h-10 text-t-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -218,7 +219,7 @@
             <h3 class="text-xl md:text-2xl font-display font-black text-center text-t-gray-dark mb-2">Konfirmasi Akses</h3>
             <p class="text-center text-t-gray font-sans font-medium mb-6 md:mb-8 leading-relaxed text-sm md:text-base">
                 Apakah kamu yakin link data <br>
-                <strong id="modal_data_name" class="text-t-red-dark font-display text-sm md:text-lg px-3 py-1.5 bg-red-50 rounded-lg inline-block mt-2 border border-red-100"></strong><br>
+                <strong id="modal_data_name" class="text-t-red-dark font-display text-sm md:text-lg px-3 py-1.5 bg-red-50 rounded-lg inline-block mt-2 border border-red-100 break-words max-w-full"></strong><br>
                 <span class="block mt-2">sudah sesuai?</span>
             </p>
 
